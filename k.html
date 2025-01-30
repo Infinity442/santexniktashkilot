@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kirish</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #004d00, #66ff66);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+        }
+        .login-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .hidden {
+            display: none;
+        }
+        .password-container {
+            position: relative;
+        }
+        .password-toggle {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            cursor: pointer;
+            width: 20px; /* Kichikroq o'lcham */
+            height: 20px; /* Kichikroq o'lcham */
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <form id="loginForm">
+            <h2>Kirish</h2>
+            <label for="password">Parol:</label>
+            <div class="password-container">
+                <input type="password" id="password" name="password" required>
+                <span class="password-toggle" id="togglePassword">
+                    <img src="https://img.icons8.com/ios-filled/50/000000/visible.png" alt="Ko'rsat" id="togglePasswordIcon">
+                </span>
+            </div>
+            <button type="submit">Kirish</button>
+            <p id="newPasswordPrompt" class="hidden">Bu sizning birinchi marta kirishingizmi? <a href="#" id="createNewPassword">Yangi parol yaratish</a></p>
+            <p id="wrongPassword" class="hidden">Parol xato. <a href="#" id="forgotPassword">Parolni unutdingizmi?</a></p>
+        </form>
+
+        <form id="newPasswordForm" class="hidden">
+            <h2>Yangi parol</h2>
+            <label for="newPassword">Yangi parol:</label>
+            <div class="password-container">
+                <input type="password" id="newPassword" name="newPassword" required>
+                <span class="password-toggle" id="toggleNewPassword">
+                    <img src="https://img.icons8.com/ios-filled/50/000000/visible.png" alt="Ko'rsat" id="toggleNewPasswordIcon">
+                </span>
+            </div>
+            <button type="submit">Parolni yangilash</button>
+        </form>
+    </div>
+
+    <script>
+        var correctPassword = ''; // Dastlab parol yo'q
+        var storedPassword = localStorage.getItem('savedPassword');
+
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var password = document.getElementById('password').value;
+            if (!storedPassword) {
+                document.getElementById('newPasswordPrompt').classList.remove('hidden');
+            } else if (password === storedPassword) {
+                window.location.href = 's.html?login=success';
+            } else {
+                document.getElementById('wrongPassword').classList.remove('hidden');
+            }
+            document.getElementById('password').value = '';
+        });
+
+        document.getElementById('createNewPassword').addEventListener('click', function() {
+            document.getElementById('loginForm').classList.add('hidden');
+            document.getElementById('newPasswordForm').classList.remove('hidden');
+            document.getElementById('password').value = '';
+        });
+
+        document.getElementById('forgotPassword').addEventListener('click', function() {
+            document.getElementById('loginForm').classList.add('hidden');
+            document.getElementById('newPasswordForm').classList.remove('hidden');
+            document.getElementById('password').value = '';
+        });
+
+        document.getElementById('newPasswordForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            correctPassword = document.getElementById('newPassword').value;
+            localStorage.setItem('savedPassword', correctPassword);
+            alert('Parolingiz muvaffaqiyatli yangilandi!');
+            document.getElementById('newPasswordForm').classList.add('hidden');
+            document.getElementById('loginForm').classList.remove('hidden');
+            document.getElementById('newPassword').value = '';
+        });
+
+        function togglePasswordVisibility(inputId, iconId) {
+            var passwordField = document.getElementById(inputId);
+            var toggleIcon = document.getElementById(iconId);
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                toggleIcon.src = 'https://img.icons8.com/ios-filled/50/000000/invisible.png';
+            } else {
+                passwordField.type = 'password';
+                toggleIcon.src = 'https://img.icons8.com/ios-filled/50/000000/visible.png';
+            }
+        }
+
+        document.getElementById('togglePassword').addEventListener('click', function() {
+            togglePasswordVisibility('password', 'togglePasswordIcon');
+        });
+
+        document.getElementById('toggleNewPassword').addEventListener('click', function() {
+            togglePasswordVisibility('newPassword', 'toggleNewPasswordIcon');
+        });
+    </script>
+    <body>
+    <html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    

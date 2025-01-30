@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VERO Bo'limi</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #4e54c8, #8f94fb); /* HYDRO sahifasi fon kodi */
+            color: white;
+            margin: 0;
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid white;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+        tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        .product-group {
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+        .search-container {
+            display: flex;
+            justify-content: flex-start;
+            margin-bottom: 20px;
+        }
+        .search-container input {
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+        .search-container button {
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            background-color: #6a11cb;
+            color: white;
+            cursor: pointer;
+        }
+        .search-container button:hover {
+            background-color: #2575fc;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            padding: 10px;
+        }
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="s.html">Asosiy Sahifa</a>
+        <a href="h.html">HYDRO</a>
+        <a href="t.html">TARIX</a>
+        <a href="b.html">BUYURTMALAR</a>
+    </nav>
+    <h1>VERO Bo'limi</h1>
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Qidiruv...">
+        <button onclick="searchTable()">Qidiruv</button>
+    </div>
+    <table id="productTable">
+        <tr>
+            <th>Mahsulot Nomi</th>
+            <th>Диаметр (mm)</th>
+        </tr>
+        <tr class="product-group">
+            <td colspan="2">Труба PN-10 ХВС</td>
+        </tr>
+        <tr>
+            <td>Труба PN-10 ХВС</td>
+            <td>20 мм</td>
+        </tr>
+        <tr>
+            <td>Труба PN-10 ХВС</td>
+            <td>25 мм</td>
+        </tr>
+        <tr>
+            <td>Труба PN-10 ХВС</td>
+            <td>32 мм</td>
+        </tr>
+        <tr>
+            <td>Труба PN-10 ХВС</td>
+            <td>40 мм</td>
+        </tr>
+        <tr>
+            <td>Труба PN-10 ХВС</td>
+            <td>50 мм</td>
+        </tr>
+        <tr>
+            <td>Труба PN-10 ХВС</td>
+            <td>63 мм</td>
+        </tr>
+        <tr>
+            <td>Труба PN-10 ХВС</td>
+            <td>75 мм</td>
+        </tr>
+        <tr>
+            <td>Труба PN-10 ХВС</td>
+            <td>90 мм</td>
+        </tr>
+        <tr>
+            <td>Труба PN-10 ХВС</td>
+            <td>110 мм</td>
+        </tr>
+        <tr>
+            <td>Труба PN-10 ХВС</td>
+            <td>125 мм</td>
+        </tr>
+        <tr>
+            <td>Труба PN-10 ХВС</td>
+            <td>160 мм</td>
+        </tr>
+        <tr>
+            <td>Труба PN-10 ХВС</td>
+            <td>200 мм</td>
+        </tr>
+        <tr class="product-group">
+            <td colspan="2">Труба PN-20 ХВС</td>
+        </tr>
+        <tr>
+            <td>Труба PN-20 ХВС</td>
+            <td>20 мм</td>
+        </tr>
+        <tr>
+            <td>Труба PN-20 ХВС</td>
+            <td>25 мм</td>
+        </tr>
+        <tr>
+            <td>Труба PN-20 ХВС</td>
+            <td>32 мм</td>
+        </tr>
+        <tr>
+            <td>Труба PN-20 ХВС</td>
+            <td>40 мм</td>
+        </tr>
+        <tr>
+            <td>Труба PN-20 ХВС</td>
+            <td>50 мм</td>
+        </tr>
+        <tr>
+            <td>Труба PN-20 ХВС</td>
+            <td>63 мм</td>
+        </tr>
+        <tr>
+            <td>Труба PN-20 ХВС</td>
+            <td>75 мм</td>
+        </tr>
+        <tr>
+            <td>Труба PN-20 ХВС</td>
+            <td>90 мм</td>
+        </tr>
+        <tr>
+            <td>Труба PN-20 ХВС</td>
+            <td>110 мм</td>
+        </tr>
+        <tr>
+            <td>Труба PN-20 ХВС</td>
+            <td>125 мм</td>
+        </tr>
+        <tr>
+            <td>Труба PN-20 ХВС</td>
+            <td>160 мм</td>
+        </tr>
+        <tr>
+            <td>Труба PN-20 ХВС</td>
+            <td>200 мм</td>
+        </tr>
+        <tr class="product-group">
+            <td colspan="2">Труба PN-16 ХВС</td>
+        </tr>
+        <tr>
+            <td>Труба PN-16 ХВС</td>
+            <td>20 мм</td>
+        </tr>
+        <tr>
+            <td>Труба PN-16 ХВС</td>
+            <td>25 мм</td>
+        </tr>
+        <tr>
+            <td>Труба PN-16 ХВС</td>
+            <td>32 мм</td>
+        </tr>
+        <tr>
+            <td>Труба PN-16 ХВС</td>
+            <td>40 мм</td>
+        </tr>
+        <tr>
+            <td>Труба PN-16 ХВС</td>
+            <td>50 мм</td>
+        </tr>
+        <tr>
+            <td>Труба PN-16 ХВС</td>
+            <td>63 мм</td>
+        </tr>
+        <tr>
+            <td>Труба PN-16 ХВС</td>
+            <td>75 мм</td>
+        </tr>
+        <tr>
+            <td>Труба PN-16 ХВС</td>
+            <td>90 мм</td>
+        </tr>
+        <tr>
+            <td>Труба PN-16 ХВС</td>
+            <td>110 мм</td>
+        </tr>
+        <tr>
+            <td>Труба PN-16 ХВС</td>
+            <td>125 мм</td>
+        </tr>
+        <tr>
+            <td>Труба PN-16 ХВС</td>
+            <td>160 мм</td>
+        </tr>
+        <tr>
+            <td>Труба PN-16 ХВС</td>
+            <td>200 мм</td>
+        </tr>
+        <tr class="product-group">
+            <td colspan="2">Труба Композит PN-20 ГВС</td>
+        </tr>
+        <tr>
+            <td>Труба Композит PN-20 ГВС</td>
+            <td>16 мм</td>
+        </tr>
+        <tr>
+            <td>Труба Композит PN-20 ГВС</td>
+            <td>20 мм</td>
+        </tr>
+        <tr>
+            <td>Труба Композит PN-20 ГВС</td>
+            <td>25 мм</td>
+        </tr>
+        <tr>
+            <td>Труба Композит PN-20 ГВС</td>
+            <td>32 мм</td>
+        </tr>
+        <tr>
+            <td>Труба Композит PN-20 ГВС</td>
+            <td>40 мм</td>
+        </tr>
+        <tr>
+            <td>Труба Композит PN-20 ГВС</td>
+            <td>50 мм</td>
+        </tr>
+        <tr>
+            <td>Труба Композит PN-20 ГВС</td>
+            <td>63 мм</td>
+        </tr>
+        <tr>
+            <td>Труба Композит PN-20 ГВС</td>
+            <td>75 мм</td>
+        </tr>
+        <tr>
+            <td>Труба Композит PN-20 ГВС</td>
+            <td>90 мм</td>
+        </tr>
+        <tr>
+            <td>Труба Композит PN-20 ГВС</td>
+            <td>110 мм</td>
+        </tr>
+        <tr>
+            <td>Труба Композит PN-20 ГВС</td>
+            <td>125 мм</td>
+        </tr>
+        <tr class="product-group">
+            <td colspan="2">Труба для эл. проводки</td>
+        </tr>
+        <tr>
+            <td>Труба для эл. проводки</td>
+            <td>20 мм</td>
+        </tr>
+        <tr>
+            <td>Труба для эл. проводки</td>
+            <td>25 мм</td>
+        </tr>
+        <tr class="product-group">
+            <td colspan="2">Труба напольного отопления</td>
+        </tr>
+        <tr>
+            <td>Труба напольного отопления PEX-B</td>
+            <td>16 мм</td>
+        </tr>
+        <tr>
+            <td>Труба напольного отопления PEX-B</td>
+            <td>20 мм</td>
+        </tr>
+        <tr>
+            <td>Труба напольного отопления PEX-RT</td>
+            <td>16 мм</td>
+        </tr>
+        <tr>
+            <td>Труба напольного отопления PEX-RT</td>
+            <td>20 мм</td>
+        </tr>
+        <tr class="product-group">
+            <td colspan="2">Отводы, 90 градусов</td>
+        </tr>
+        <tr>
+            <td>Отвод, 90 градусов</td>
+            <td>20 мм</td>
+        </tr>
+        <tr>
+            <td>Отвод, 90 градусов</td>
+            <td>25 мм</td>
+        </tr>
+        <tr>
+            <td>Отвод, 90 градусов</td>
+            <td>32 мм</td>
+        </tr>
+        <tr>
+            <td>Отвод, 90 градусов</td>
+            <td>40 мм</td>
+        </tr>
+        <tr>
+            <td>Отвод, 90 градусов</td>
+            <td>50 мм</td>
+        </tr>
+        <tr>
+            <td>Отвод, 90 градусов</td>
+            <td>63 мм</td>
+        </tr>
+        <tr>
+            <td>Отвод, 90 градусов</td>
+            <td>75 мм</td>
+        </tr>
+        <tr>
+            <td>Отвод, 90 градусов</td>
+            <td>90 мм</td>
+        </tr>
+        <tr>
+            <td>Отвод, 90 градусов</td>
+            <td>110 мм</td>
+        </tr>
+        <tr>
+            <td>Отвод, 90 градусов</td>
+            <td>125 мм</td>
+        </tr>
+        <tr>
+            <td>Отвод, 90 градусов</td>
+            <td>140 мм</td>
+        </tr>
+        <tr>
+            <td>Отвод, 90 градусов</td>
+            <td>160 мм</td>
+        </tr>
+        <tr class="product-group">
+            <td colspan="2">Муфта</td>
+        </tr>
+        <tr>
+            <td>Муфта</td>
+            <td>20 мм</td>
+        </tr>
+        <tr>
+            <td>Муфта</td>
+            <td>25 мм</td>
+        </tr>
+        <tr>
+            <td>Муфта</td>
+            <td>32 мм</td>
+        </tr>
+        <tr>
+            <td>Муфта</td>
+            <td>40 мм</td>
+        </tr>
+        <tr>
+            <td>Муфта</td>
+            <td>50 мм</td>
+        </tr>
+        <tr>
+            <td>Муфта</td>
+            <td>63 мм</td>
+        </tr>
+        <tr>
+            <td>Муфта</td>
+            <td>75 мм</td>
+        </tr>
+        <tr>
+            <td>Муфта</td>
+            <td>90 мм</td>
+        </tr>
+        <tr>
+            <td>Муфта</td>
+            <td>110 мм</td>
+        </tr>
+        <tr>
+            <td>Муфта</td>
+            <td>125 мм</td>
+        </tr>
+        <tr>
+            <td>Муфта</td>
+            <td>140 мм</td>
+        </tr>
+        <tr>
+            <td>Муфта</td>
+            <td>160 мм</td>
+        </tr>
+        <tr class="product-group">
+            <td colspan="2">Тройники переходники</td>
+        </tr>
+        <tr>
+            <td>Тройник переходник</td>
+            <td>25-20-25 мм</td>
+        </tr>
+        <tr>
+            <td>Тройник переходник</td>
+            <td>32-20-32 мм</td>
+        </tr>
+        <tr>
+            <td>Тройник переходник</td>
+            <td>32-25-32 мм</td>
+        </tr>
+        <tr>
+            <td>Тройник переходник</td>
+            <td>40-20-40 мм</td>
+        </tr>
+        <tr>
+            <td>Тройник переходник</td>
+            <td>40-25-40 мм</td>
+        </tr>
+        <tr>
+            <td>Тройник переходник</td>
+            <td>40-32-40 мм</td>
+        </tr>
+        <tr>
+            <td>Тройник переходник</td>
+            <td>50-25-50 мм</td>
+        </tr>
+        <tr>
+            <td>Тройник переходник</td>
+            <td>50-32-50 мм</td>
+        </tr>
+        <tr>
+            <td>Тройник переходник</td>
+            <td>50-40-50 мм</td>
+        </tr>
+        <tr>
+            <td>Тройник переходник</td>
+            <td>63-32-63 мм</td>
+        </tr>
+        <tr>
+            <td>Тройник переходник</td>
+            <td>63-40-63 мм</td>
+        </tr>
+        <tr>
+            <td>Тройник переходник</td>
+            <td>63-50-63 мм</td>
+        </tr>
+        <tr>
+            <td>Тройник переходник</td>
+            <td>75-32-75 мм</td>
+        </tr>
+        <tr>
+            <td>Тройник переходник</td>
+            <td>75-40-75 мм</td>
+        </tr>
+        <tr>
+            <td>Тройник переходник</td>
+            <td>75-50-75 мм</td>
+        </tr>
+        <tr>
+            <td>Тройник переходник</td>
+            <td>75-63-75 мм</td>
+        </tr>
+        <tr>
+            <td>Тройник переходник</td>
+            <td>90-50-90 мм</td>
+        </tr>
+        <tr>
+            <td>Тройник переходник</td>
+            <td>90-63-90 мм</td>
+        </tr>
+        <tr>
+            <td>Тройник переходник</td>
+            <td>90-75-90 мм</td>
+        </tr>
+        <tr>
+            <td>Тройник переходник</td>
+            <td>110-50-110 мм</td>
+        </tr>
+        <tr>
+            <td>Тройник переходник</td>
+            <td>110-63-110 мм</td>
+        </tr>
+        <tr>
+            <td>Тройник переходник</td>
+            <td>110-75-110 мм</td>
+        </tr>
+        <tr>
+            <td>Тройник переходник</td>
+            <td>110-90-110 мм</td>
+        </tr>
+    </table>
+    <script>
+        function searchTable() {
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("searchInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("productTable");
+            tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td");
+                if (td) {
+                    for (var j = 0; j < td.length; j++) {
+                        if (td[j]) {
+                            txtValue = td[j].textContent || td[j].innerText;
+                            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                                tr[i].style.display = "";
+                                break;
+                            } else {
+                                tr[i].style.display = "none";
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>
+
+
+        
+               
+        

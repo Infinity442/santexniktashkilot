@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buyurtmalar</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: radial-gradient(circle, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        .navbar a:hover {
+            color: #FFD700;
+        }
+
+        h1 {
+            margin: 20px 0;
+        }
+
+        table {
+            width: 90%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid white;
+        }
+
+        th {
+            background-color: rgba(0, 150, 0, 0.8);
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba(0, 100, 0, 0.3);
+        }
+
+        .menu-container {
+            position: absolute;
+            top: 120px;
+            left: 20px;
+            display: inline-block;
+        }
+
+        .menu-trigger {
+            cursor: pointer;
+            font-size: 24px;
+        }
+
+        .menu-dropdown {
+            display: none;
+            position: absolute;
+            top: 30px;
+            left: 0;
+            background-color: rgba(0, 0, 0, 0.8);
+            border: 1px solid white;
+            border-radius: 8px;
+            z-index: 10;
+            width: 200px;
+            text-align: left;
+        }
+
+        .menu-dropdown button {
+            background: none;
+            border: none;
+            color: white;
+            padding: 10px;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+        }
+
+        .menu-dropdown button:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        input[type="number"] {
+            width: 60px;
+            margin: 0 5px;
+            text-align: center;
+        }
+
+        /* Tahrirlashda ko'rsatish */
+        .edit-mode td:last-child {
+            display: table-cell;
+        }
+
+        /* Saqlash tugmasi faqat tahrirlash rejimida */
+        .save-btn-container {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .save-btn-container button {
+            padding: 10px 20px;
+            background-color: green;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .save-btn-container button:hover {
+            background-color: darkgreen;
+        }
+
+        /* Chop etishda "Amallar" ustunini yashirish */
+        @media print {
+            th:nth-child(5), td:nth-child(5) {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="s.html">Asosiy Sahifa</a>
+        <a href="h.html">HYDRO</a>
+        <a href="v.html">VERO</a>
+        <a href="k.html">Tarix</a>
+    </nav>
+
+    <h1>Buyurtmalar</h1>
+
+    <!-- Uch nuqta menyusi (chap burchakda) -->
+    <div class="menu-container">
+        <span class="menu-trigger" onclick="toggleMenu()">⋮</span>
+        <div class="menu-dropdown">
+            <button onclick="clearTable()">Ochirish</button>
+            <button onclick="editTable()">Tahrirlash</button>
+            <button onclick="saveToHistory()">Tarixga Saqlash</button>
+            <button onclick="printTable()">Chop etish</button>
+        </div>
+    </div>
+
+    <!-- Buyurtmalar jadvali -->
+    <table id="ordersTable">
+        <thead>
+            <tr>
+                <th>Mahsulot Nomi</th>
+                <th>Диаметр (mm)</th>
+                <th>Sotilish Narxi (UZS)</th>
+                <th>Miqdori</th>
+                <th>Jami Narxi (UZS)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Saqlangan buyurtmalar dinamik ravishda qo'shiladi -->
+        </tbody>
+    </table>
+
+    <!-- Saqlash tugmasi -->
+    <div class="save-btn-container" id="saveBtnContainer">
+        <button onclick="saveChanges()">Saqlash</button>
+    </div>
+
+    <script>
+        // Buyurtmalarni localStorage'dan olish va jadvalga yuklash
+        window.onload = function() {
+            const orders = JSON.parse(localStorage.getItem("buyurtmalar")) || [];
+            const tableBody = document.querySelector("#ordersTable tbody");
+
+            if (orders.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="5">Saqlangan buyurtmalar mavjud emas</td></tr>';
+            } else {
+                orders.forEach((order, index) => {
+                    const row = document.createElement("tr");
+                    row.classList.add("normal-mode"); // Normal rejimda boshlash
+                    row.innerHTML = `
+                        <td>${order.name}</td>
+                        <td>${order.size} mm</td>
+                        <td>${order.sellPrice} UZS</td>
+                        <td>${order.quantity}</td>
+                        <td id="totalPrice${index}">${order.totalPrice} UZS</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            }
+        };
+
+        // "Ochirish" tugmasi vazifasi
+        function clearTable() {
+            if (confirm("Haqiqatan ham barcha buyurtmalarni o'chirmoqchimisiz?")) {
+                localStorage.removeItem("buyurtmalar");
+                window.location.reload();
+            }
+        }
+
+        // "Tahrirlash" tugmasi (Son va narxni tahrirlash)
+        function editTable() {
+            const rows = document.querySelectorAll("#ordersTable tbody tr");
+            rows.forEach((row, index) => {
+                row.classList.remove("normal-mode");
+                row.classList.add("edit-mode");
+
+                const quantityCell = row.cells[3];
+                const sellPriceCell = row.cells[2]; // Narxni tahrirlaymiz
+
+                // "Miqdor" va "Narx" ustunlarini inputga aylantirish
+                quantityCell.innerHTML = `<input type="number" value="${quantityCell.innerText}" onchange="updateRow(${index})" />`;
+                sellPriceCell.innerHTML = `<input type="number" value="${sellPriceCell.innerText.replace(' UZS', '')}" onchange="updateRow(${index})" />`;
+            });
+
+            // Saqlash tugmasini ko'rsatish
+            document.getElementById("saveBtnContainer").style.display = "block";
+        }
+
+        // Jadvalni yangilash
+        function updateRow(index) {
+            const rows = document.querySelectorAll("#ordersTable tbody tr");
+            const row = rows[index];
+            const quantityInput = row.querySelector("td:nth-child(4) input");
+            const sellPriceInput = row.querySelector("td:nth-child(3) input");
+
+            const quantity = parseFloat(quantityInput.value);
+            const sellPrice = parseFloat(sellPriceInput.value);
+
+            const orders = JSON.parse(localStorage.getItem("buyurtmalar")) || [];
+            const order = orders[index];
+
+            // Narx va miqdorni yangilaymiz
+            order.quantity = quantity;
+            order.sellPrice = sellPrice;
+
+            // Jami narxini sotilish narxini miqdoriga ko'paytirib hisoblaymiz
+            order.totalPrice = sellPrice * quantity;
+
+            // Yangilangan qiymatlarni saqlash
+            orders[index] = order;
+            localStorage.setItem("buyurtmalar", JSON.stringify(orders));
+
+            // Jadvalni yangilash
+            document.getElementById(`totalPrice${index}`).innerText = order.totalPrice + " UZS";
+        }
+
+        // Tahrirlangan buyurtmalarni saqlash
+        function saveChanges() {
+            const rows = document.querySelectorAll("#ordersTable tbody tr");
+            const orders = [];
+
+            rows.forEach((row, index) => {
+                const order = {
+                    name: row.cells[0].innerText,
+                    size: row.cells[1].innerText.replace(' mm', ''),
+                    sellPrice: parseFloat(row.cells[2].querySelector("input").value),
+                    quantity: parseFloat(row.cells[3].querySelector("input").value),
+                    totalPrice: parseFloat(row.cells[4].innerText.replace(' UZS', ''))
+                };
+
+                orders.push(order);
+            });
+
+            // Saqlangan buyurtmalarni localStorage'da saqlash
+            localStorage.setItem("buyurtmalar", JSON.stringify(orders));
+
+            // Jadvalni yangilash
+            window.location.reload();
+        }
+
+        // Tarixga saqlash
+        function saveToHistory() {
+            const orders = JSON.parse(localStorage.getItem("buyurtmalar")) || [];
+            let htmlContent = "<html><head><title>Buyurtmalar Tarixi</title></head><body><h2>Buyurtmalar Tarixi</h2><table><tr><th>Mahsulot Nomi</th><th>Jami Narxi</th></tr>";
+
+            orders.forEach(order => {
+                htmlContent += `
+                    <tr>
+                        <td>${order.name}</td>
+                        <td>${order.totalPrice} UZS</td>
+                    </tr>
+                `;
+            });
+
+            htmlContent += '</table></body></html>';
+
+            const blob = new Blob([htmlContent], { type: 'application/msword' });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "t.html";
+            link.click();
+        }
+
+        // Chop etish
+        function printTable() {
+            const newWindow = window.open('', '', 'height=500, width=800');
+            newWindow.document.write('<html><head><title>Buyurtmalar</title></head><body>');
+            newWindow.document.write(document.querySelector("#ordersTable").outerHTML);
+            newWindow.document.write('</body></html>');
+            newWindow.print();
+        }
+
+        // Uch nuqta menyusini ko'rsatish va yashirish
+        let isMenuOpen = false;
+        function toggleMenu() {
+            const menu = document.querySelector(".menu-dropdown");
+            if (isMenuOpen) {
+                menu.style.display = "none";
+            } else {
+                menu.style.display = "block";
+            }
+            isMenuOpen = !isMenuOpen;
+        }
+    </script>
+</body>
+</html>

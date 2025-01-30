@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TARIX</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #4e54c8, #8f94fb);
+            color: white;
+            margin: 0;
+            padding: 20px;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+        }
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        th, td {
+            border: 1px solid white;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+        .save-button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin-top: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .save-button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="s.html">Asosiy Sahifa</a>
+        <a href="h.html">HYDRO</a>
+        <a href="v.html">VERO</a>
+        <a href="b.html">BUYURTMALAR</a>
+        <a href="t.html">TARIX</a>
+    </nav>
+
+    <h1>Buyurtmalar Tarixi</h1>
+    
+    <div id="history">
+        <!-- Tarix jadvali bu yerda hosil qilinadi -->
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const history = JSON.parse(localStorage.getItem('history')) || [];
+            const historyDiv = document.getElementById("history");
+
+            if (history.length > 0) {
+                history.forEach((item, index) => {
+                    let historyHtml = `
+                        <h3>${item.date}</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Mahsulot Nomi</th>
+                                    <th>Диаметр (mm)</th>
+                                    <th>Miqdor</th>
+                                    <th>Sotilish Narxi (UZS)</th>
+                                    <th>Jami (UZS)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                    `;
+                    item.orders.forEach(order => {
+                        historyHtml += `
+                            <tr>
+                                <td>${order.name}</td>
+                                <td>${order.size} mm</td>
+                                <td>${order.quantity}</td>
+                                <td>${order.sellPrice} UZS</td>
+                                <td>${order.totalPrice} UZS</td>
+                            </tr>
+                        `;
+                    });
+                    historyHtml += `
+                            </tbody>
+                        </table>
+                        <button class="save-button" onclick="saveAsDoc('${item.date}', ${index})">
+                            Saqlash
+                        </button>
+                    `;
+                    historyDiv.innerHTML += historyHtml;
+                });
+            } else {
+                historyDiv.innerHTML = "<p>Tarixda buyurtmalar mavjud emas.</p>";
+            }
+        });
+
+        // Jadvalni DOC formatida saqlash funksiyasi
+        function saveAsDoc(date, index) {
+            const history = JSON.parse(localStorage.getItem('history'));
+            const orders = history[index].orders;
+
+            // HTML jadval yaratish
+            let content = `
+                <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+                <head><meta charset="utf-8"><title>Buyurtmalar</title></head><body>
+                <h1>Buyurtma Tarixi: ${date}</h1>
+                <table border="1" style="border-collapse:collapse; width:100%;">
+                    <thead>
+                        <tr>
+                            <th>Mahsulot Nomi</th>
+                            <th>Диаметр (mm)</th>
+                            <th>Miqdor</th>
+                            <th>Sotilish Narxi</th>
+                            <th>Jami</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            orders.forEach(order => {
+                content += `
+                    <tr>
+                        <td>${order.name}</td>
+                        <td>${order.size} mm</td>
+                        <td>${order.quantity}</td>
+                        <td>${order.sellPrice} UZS</td>
+                        <td>${order.totalPrice} UZS</td>
+                    </tr>
+                `;
+            });
+
+            content += `
+                    </tbody>
+                </table>
+                </body></html>
+            `;
+
+            const blob = new Blob(['\ufeff', content], { type: 'application/msword' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `${date}_Buyurtmalar.doc`;
+            link.click();
+        }
+    </script>
+</body>
+</html>

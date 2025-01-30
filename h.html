@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HYDRO Bo'limi</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: radial-gradient(circle, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        .navbar a:hover {
+            color: #FFD700;
+        }
+
+        h1 {
+            margin: 20px 0;
+        }
+
+        .search-container {
+            margin: 20px 0;
+        }
+
+        .search-container input {
+            width: 40%;
+            padding: 10px;
+            border-radius: 25px;
+            border: 1px solid white;
+        }
+
+        .search-container button {
+            padding: 10px 20px;
+            margin-left: 10px;
+            background-color: #FFD700;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+        }
+
+        .search-container button:hover {
+            background-color: #FF6347;
+        }
+
+        table {
+            width: 90%;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid white;
+        }
+
+        th {
+            background-color: rgba(0, 150, 0, 0.8);
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba(0, 100, 0, 0.3);
+        }
+
+        .sell-price-input, .quantity-input {
+            width: 70px;
+            padding: 5px;
+            border: none;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="s.html">Asosiy Sahifa</a>
+        <a href="h.html">HYDRO</a>
+        <a href="v.html">VERO</a>
+        <a href="b.html">BUYURTMALAR</a>
+    </nav>
+
+    <h1>HYDRO Bo'limi</h1>
+
+    <div class="search-container">
+        <input type="text" id="searchBox" placeholder="Mahsulot nomi yoki o'lchami bo'yicha qidirish..." oninput="filterProducts()">
+        <button onclick="saveToOrders()">Saqlash</button>
+    </div>
+
+    <table id="productTable">
+        <thead>
+            <tr>
+                <th>Mahsulot Nomi</th>
+                <th>Диаметр (mm)</th>
+                <th>Narxi (UZS)</th>
+                <th>Sotilish Narxi (UZS)</th>
+                <th>Miqdori</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Dinamik ravishda qo'shiladigan mahsulotlar -->
+        </tbody>
+    </table>
+
+    <script>
+        const products = [
+            { name: "Труба PN 16 ХВС", size: 20, quantity: 100, price: 4690 },
+            { name: "Труба PN 16 ХВС", size: 25, quantity: 100, price: 7150 },
+            { name: "Труба PN 16 ХВС", size: 32, quantity: 60, price: 11550 },
+            { name: "Труба PN 16 ХВС", size: 40, quantity: 40, price: 16890 },
+            { name: "Труба PN 16 ХВС", size: 50, quantity: 24, price: 28200 },
+            { name: "Труба PN 16 ХВС", size: 63, quantity: 16, price: 44220 },
+            { name: "Труба композит PN 20 ГВС", size: 20, quantity: 100, price: 5880 },
+            { name: "Труба композит PN 20 ГВС", size: 25, quantity: 100, price: 9120 },
+            { name: "Труба композит PN 20 ГВС", size: 32, quantity: 60, price: 14190 },
+            { name: "Труба композит PN 20 ГВС", size: 40, quantity: 40, price: 22150 },
+            { name: "Труба композит PN 20 ГВС", size: 50, quantity: 24, price: 32500 },
+            { name: "Труба композит PN 20 ГВС", size: 63, quantity: 16, price: 52810 },
+            { name: "Труба PN 10 ХВС", size: 32, quantity: 60, price: 8515 },
+            { name: "Труба PN 10 ХВС", size: 40, quantity: 40, price: 12780 },
+            { name: "Труба PN 10 ХВС", size: 50, quantity: 24, price: 19935 },
+            { name: "Труба PN 10 ХВС", size: 63, quantity: 16, price: 31335 },
+            { name: "Труба PN 10 ХВС", size: 110, quantity: 4, price: 112200 },
+            { name: "ОТВОД 90 градусов", size: 20, quantity: 400, price: 690 },
+            { name: "ОТВОД 90 градусов", size: 25, quantity: 250, price: 1095 },
+            { name: "ОТВОД 90 градусов", size: 32, quantity: 100, price: 1790 },
+            { name: "ОТВОД 90 градусов", size: 40, quantity: 60, price: 3220 },
+            { name: "ОТВОД 90 градусов", size: 50, quantity: 40, price: 5390 },
+            { name: "ОТВОД 90 градусов", size: 63, quantity: 20, price: 9820 },
+            { name: "ПОЛУОТВОД 45 градусов", size: 20, quantity: 500, price: 595 },
+            { name: "ПОЛУОТВОД 45 градусов", size: 25, quantity: 250, price: 1065 },
+            { name: "ПОЛУОТВОД 45 градусов", size: 32, quantity: 160, price: 1670 },
+            { name: "ПОЛУОТВОД 45 градусов", size: 40, quantity: 80, price: 2740 },
+            { name: "ПОЛУОТВОД 45 градусов", size: 50, quantity: 50, price: 4670 },
+            { name: "ПОЛУОТВОД 45 градусов", size: 63, quantity: 30, price: 9210 },
+            { name: "МУФТА", size: 20, quantity: 600, price: 530 },
+            { name: "МУФТА", size: 25, quantity: 300, price: 795 },
+            { name: "МУФТА", size: 32, quantity: 200, price: 1230 },
+            { name: "МУФТА", size: 40, quantity: 125, price: 2080 },
+            { name: "МУФТА", size: 50, quantity: 75, price: 3990 },
+            { name: "МУФТА", size: 63, quantity: 40, price: 8105 },
+            { name: "ТРОЙНИК", size: 20, quantity: 300, price: 915 },
+            { name: "ТРОЙНИК", size: 25, quantity: 160, price: 1395 },
+            { name: "ТРОЙНИК", size: 32, quantity: 100, price: 2395 },
+            { name: "ТРОЙНИК", size: 40, quantity: 50, price: 4280 },
+            { name: "ТРОЙНИК", size: 50, quantity: 30, price: 7870 },
+            { name: "ТРОЙНИК", size: 63, quantity: 16, price: 16275 },
+            { name: "ПЕРЕХОДНИК", size: "25/20", quantity: 600, price: 530 },
+            { name: "ПЕРЕХОДНИК", size: "32/20", quantity: 400, price: 685 },
+            { name: "ПЕРЕХОДНИК", size: "32/25", quantity: 300, price: 780 },
+            { name: "ПЕРЕХОДНИК", size: "40/20", quantity: 300, price: 1150 },
+            { name: "ПЕРЕХОДНИК", size: "40/25", quantity: 250, price: 1250 },
+            { name: "ПЕРЕХОДНИК", size: "40/32", quantity: 200, price: 1350 },
+            { name: "ПЕРЕХОДНИК", size: "50/20", quantity: 200, price: 1750 },
+            { name: "ПЕРЕХОДНИК", size: "50/25", quantity: 160, price: 1850 },
+            { name: "ПЕРЕХОДНИК", size: "50/32", quantity: 160, price: 1980 },
+            { name: "ПЕРЕХОДНИК", size: "50/40", quantity: 125, price: 2350 },
+            { name: "ПЕРЕХОДНИК", size: "63/25", quantity: 100, price: 3220 },
+            { name: "ПЕРЕХОДНИК", size: "63/32", quantity: 80, price: 3430 },
+            { name: "ПЕРЕХОДНИК", size: "63/40", quantity: 90, price: 3650 },
+            { name: "ПЕРЕХОДНИК", size: "63/50", quantity: 60, price: 3850 },
+            { name: "ПЕРЕХОДНИК ТРОЙНИК", size: "25/20/25", quantity: 200, price: 1530 },
+            { name: "ПЕРЕХОДНИК ТРОЙНИК", size: "32/20/32", quantity: 125, price: 2205 },
+            { name: "ПЕРЕХОДНИК ТРОЙНИК", size: "32/25/32", quantity: 100, price: 2205 },
+            { name: "ПЕРЕХОДНИК ТРОЙНИК", size: "40/20/40", quantity: 80, price: 2655 },
+            { name: "ПЕРЕХОДНИК ТРОЙНИК", size: "40/25/40", quantity: 75, price: 3120 },
+            { name: "ПЕРЕХОДНИК ТРОЙНИК", size: "40/32/40", quantity: 60, price: 3350 },
+            { name: "ПЕРЕХОДНИК ТРОЙНИК", size: "50/20/50", quantity: 50, price: 4250 },
+            { name: "ПЕРЕХОДНИК ТРОЙНИК", size: "50/25/50", quantity: 50, price: 4500 },
+            { name: "ПЕРЕХОДНИК ТРОЙНИК", size: "50/32/50", quantity: 40, price: 5075 },
+            { name: "ПЕРЕХОДНИК ТРОЙНИК", size: "50/40/50", quantity: 30, price: 5920 },
+            { name: "ПЕРЕХОДНИК ТРОЙНИК", size: "63/25/63", quantity: 0, price: 0 },
+            { name: "ПЕРЕХОДНИК ТРОЙНИК", size: "63/32/63", quantity: 24, price: 8650 },
+            { name: "ПЕРЕХОДНИК ТРОЙНИК", size: "63/40/63", quantity: 24, price: 10750 },
+            { name: "ПЕРЕХОДНИК ТРОЙНИК", size: "63/50/63", quantity: 20, price: 13220 },
+            { name: "КЛИПСА", size: 20, quantity: 800, price: 270 },
+            { name: "КЛИПСА", size: 25, quantity: 600, price: 335 },
+            { name: "КЛИПСА", size: 32, quantity: 500, price: 455 },
+            { name: "КЛИПСА", size: 40, quantity: 250, price: 685 },
+            { name: "КЛИПСА", size: 50, quantity: 150, price: 1360 },
+            { name: "КЛИПСА", size: 63, quantity: 100, price: 1970 },
+            { name: "ЗАГЛУШКА", size: 20, quantity: 800, price: 615 },
+            { name: "ЗАГЛУШКА", size: 25, quantity: 600, price: 820 },
+            { name: "ЗАГЛУШКА", size: 32, quantity: 300, price: 1150 },
+            { name: "ЗАГЛУШКА", size: 40, quantity: 200, price: 2520 },
+            { name: "ЗАГЛУШКА", size: 50, quantity: 150, price: 1360 },
+            { name: "ЗАГЛУШКА", size: 63, quantity: 100, price: 1970 },
+            { name: "ЗАГЛУШКА С РЕЗЬБОЙ", size: "1/2 20", quantity: 1000, price: 595 },
+
+        ];
+
+        // Kirillni Lotin yozuviga o‘girish uchun transliteratsiya funksiyasi
+        function transliterate(text) {
+            return text
+                .replace(/а/g, 'a').replace(/б/g, 'b').replace(/в/g, 'v').replace(/г/g, 'g')
+                .replace(/д/g, 'd').replace(/е/g, 'e').replace(/ё/g, 'yo').replace(/ж/g, 'j')
+                .replace(/з/g, 'z').replace(/и/g, 'i').replace(/й/g, 'y').replace(/к/g, 'k')
+                .replace(/л/g, 'l').replace(/м/g, 'm').replace(/н/g, 'n').replace(/о/g, 'o')
+                .replace(/п/g, 'p').replace(/р/g, 'r').replace(/с/g, 's').replace(/т/g, 't')
+                .replace(/у/g, 'u').replace(/ф/g, 'f').replace(/х/g, 'x').replace(/ц/g, 'ts')
+                .replace(/ч/g, 'ch').replace(/ш/g, 'sh').replace(/щ/g, 'shch').replace(/ъ/g, '')
+                .replace(/ы/g, 'y').replace(/ь/g, '').replace(/э/g, 'e').replace(/ю/g, 'yu')
+                .replace(/я/g, 'ya')
+                .replace(/А/g, 'A').replace(/Б/g, 'B').replace(/В/g, 'V').replace(/Г/g, 'G')
+                .replace(/Д/g, 'D').replace(/Е/g, 'E').replace(/Ё/g, 'Yo').replace(/Ж/g, 'J')
+                .replace(/З/g, 'Z').replace(/И/g, 'I').replace(/Й/g, 'Y').replace(/К/g, 'K')
+                .replace(/Л/g, 'L').replace(/М/g, 'M').replace(/Н/g, 'N').replace(/О/g, 'O')
+                .replace(/П/g, 'P').replace(/Р/g, 'R').replace(/С/g, 'S').replace(/Т/g, 'T')
+                .replace(/У/g, 'U').replace(/Ф/g, 'F').replace(/Х/g, 'X').replace(/Ц/g, 'Ts')
+                .replace(/Ч/g, 'Ch').replace(/Ш/g, 'Sh').replace(/Щ/g, 'Shch').replace(/Ъ/g, '')
+                .replace(/Ы/g, 'Y').replace(/Ь/g, '').replace(/Э/g, 'E').replace(/Ю/g, 'Yu')
+                .replace(/Я/g, 'Ya');
+        }
+
+        // Qidiruvni amalga oshiradigan funksiya
+        function filterProducts() {
+            const query = document.getElementById("searchBox").value.toLowerCase().trim();
+            const transliteratedQuery = transliterate(query);
+
+            const filteredProducts = products.filter(product => {
+                const productName = product.name.toLowerCase().trim();
+                const transliteratedName = transliterate(productName);
+                const productSize = product.size.toString();
+
+                return (
+                    productName.includes(query) ||
+                    transliteratedName.includes(transliteratedQuery) ||
+                    productSize.includes(query)
+                );
+            });
+
+            loadProducts(filteredProducts);
+        }
+
+        // Mahsulotlarni jadvalga yuklash
+        function loadProducts(filteredProducts = products) {
+            const tableBody = document.querySelector("#productTable tbody");
+            tableBody.innerHTML = "";
+
+            filteredProducts.forEach(product => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${product.name}</td>
+                    <td>${product.size} mm</td>
+                    <td>${product.price} UZS</td>
+                    <td><input type="number" class="sell-price-input" placeholder="0" min="1"></td>
+                    <td><input type="number" class="quantity-input" placeholder="0" min="1"></td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Mahsulotlarni saqlash va buyurtmalar sahifasiga yo'naltirish
+        function saveToOrders() {
+            const orders = [];
+            const tableRows = document.querySelectorAll("#productTable tbody tr");
+
+            tableRows.forEach(row => {
+                const name = row.children[0].innerText;
+                const size = row.children[1].innerText.split(" ")[0];
+                const sellPrice = parseFloat(row.children[3].querySelector(".sell-price-input").value);
+                const quantity = parseInt(row.children[4].querySelector(".quantity-input").value);
+
+                if (sellPrice > 0 && quantity > 0) {
+                    const totalPrice = sellPrice * quantity;
+                    orders.push({ name, size, sellPrice, quantity, totalPrice });
+                }
+            });
+
+            if (orders.length > 0) {
+                localStorage.setItem("buyurtmalar", JSON.stringify(orders));
+                alert("Buyurtmalar muvaffaqiyatli saqlandi!");
+                window.location.href = "b.html"; // Buyurtmalar sahifasiga yo'naltirish
+            } else {
+                alert("Iltimos, buyurtmalarni kiriting.");
+            }
+        }
+
+        // Sahifa yuklanganda mahsulotlarni ko'rsatish
+        window.onload = function() {
+            loadProducts();
+        };
+    </script>
+</body>
+</html>

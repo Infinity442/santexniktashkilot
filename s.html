@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asosiy Sahifa</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #1b1b1b, #222831);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        h1 {
+            font-size: 36px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .button {
+            padding: 15px 30px;
+            margin: 10px;
+            background-color: #FFD700;
+            color: black;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: #FF6347;
+            transform: scale(1.1);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .form-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .form-container input {
+            width: 60%;
+            padding: 10px;
+            font-size: 18px;
+            border-radius: 10px;
+            border: none;
+            margin-bottom: 20px;
+        }
+
+        .form-container button {
+            padding: 12px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .form-container button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <h1>Asosiy Sahifa</h1>
+    <button class="button" id="addOrder">Zayafka Qo‘shish</button>
+
+    <div id="choiceContainer" class="hidden">
+        <button class="button" id="chooseHydro">HYDRO</button>
+        <button class="button" id="chooseVero">VERO</button>
+    </div>
+
+    <div id="formContainer" class="hidden">
+        <input type="text" id="customerName" placeholder="Ism yoki Tashkilot nomini kiriting">
+        <button id="submitName">Tasdiqlash</button>
+    </div>
+
+    <script>
+        const addOrderButton = document.getElementById('addOrder');
+        const choiceContainer = document.getElementById('choiceContainer');
+        const formContainer = document.getElementById('formContainer');
+        const chooseHydroButton = document.getElementById('chooseHydro');
+        const chooseVeroButton = document.getElementById('chooseVero');
+        const customerNameInput = document.getElementById('customerName');
+        const submitNameButton = document.getElementById('submitName');
+
+        let selectedSection = ''; // HYDRO yoki VERO tanlovi saqlanadi
+
+        addOrderButton.addEventListener('click', () => {
+            choiceContainer.classList.remove('hidden');
+        });
+
+        chooseHydroButton.addEventListener('click', () => {
+            selectedSection = 'HYDRO';
+            formContainer.classList.remove('hidden');
+            choiceContainer.classList.add('hidden');
+        });
+
+        chooseVeroButton.addEventListener('click', () => {
+            selectedSection = 'VERO';
+            formContainer.classList.remove('hidden');
+            choiceContainer.classList.add('hidden');
+        });
+
+        submitNameButton.addEventListener('click', () => {
+            const customerName = customerNameInput.value.trim();
+            if (customerName) {
+                // Ma'lumotlarni localStorage'ga saqlaymiz
+                localStorage.setItem('customerName', customerName);
+                localStorage.setItem('selectedSection', selectedSection);
+
+                // Tanlangan bo‘limga yo‘naltirish
+                if (selectedSection === 'HYDRO') {
+                    window.location.href = 'h.html';
+                } else if (selectedSection === 'VERO') {
+                    window.location.href = 'v.html';
+                }
+            } else {
+                alert('Iltimos, ism yoki tashkilot nomini kiriting!');
+            }
+        });
+    </script>
+</body>
+</html>
